@@ -1,0 +1,11 @@
+<p><%= flash[:register] %></p>
+<form class="form-horizontal" action="/register" method="post">
+  <h2 class="form-signin-heading">Регистрация</h2>
+  <label>Логин:</label><br />
+  <input name="user[username]" type="text" value="<%= @user.username %>" required /><br />
+  <label>Email адрес:</label><br />
+  <input name="user[email]" type="email" value="<%= @user.email %>" required /><br />
+  <label>Пароль:</label><br />
+  <input id="user_password" name="user[password]" type="password" value="<%= @user.password %>" required /><hr>
+  <button class="btn btn-large btn-primary" type="submit">Зарегистрироваться</button>
+</form>

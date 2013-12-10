@@ -1,0 +1,24 @@
+<!--h1>Edit Post</h1>
+<form action="/posts/<%= @post.id %>" method="post">
+  <input type="hidden" name="_method" value="put" />
+ 
+  <label for="post_title">Title:</label><br />
+  <input id="post_title" name="post[title]" type="text" value="<%= @post.title %>" required />
+  <br />
+ 
+  <label for="post_body">Body:</label><br />
+  <textarea id="post_body" name="post[body]" rows="5"><%= @post.body %></textarea>
+  <br />
+  
+  <input type="submit" value="Edit Post" />
+</form-->
+
+<form class="form-horizontal" action="/posts/<%= @post.id %>" method="post">
+  <h2 class="form-signin-heading">Редактировать пост</h2>
+  <input type="hidden" name="_method" value="put" />
+  <label>Заголовок:</label><br />
+  <input name="post[title]" type="text" value="<%= @post.title %>" required /><br />
+  <label>Текст:</label><br />
+  <textarea name="post[body]" rows="5"><%= @post.body %></textarea><hr> 
+  <button class="btn btn-large btn-primary" type="submit">Редактировать пост</button>
+</form>    

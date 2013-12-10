@@ -1,0 +1,9 @@
+<form class="form-horizontal" action="/posts" method="post">
+  <h2 class="form-signin-heading">Новый пост</h2>
+  <label>Заголовок:</label><br />
+  <input name="post[title]" type="text" value="<%= @post.title %>" required /><br />
+  <label>Текст:</label><br />
+  <textarea name="post[body]" rows="7"><%= @post.body %></textarea><hr>
+  <input type="hidden" name="post[user_id]" type="text" value="<%= session[:user_id] %>" />  
+  <button class="btn btn-large btn-primary" type="submit">Создать пост</button>
+</form> 

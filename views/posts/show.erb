@@ -1,0 +1,40 @@
+<h1><%= @post.title %></h1>
+<p class="lead">Автор: <%= @user.username %></p>
+<hr>
+<p><span class="glyphicon glyphicon-time"></span>  <%= pretty_date(@post.created_at) %></p>
+
+<% if session[:user_id] == @post.user_id %>
+  <a class="btn btn-warning" id="btn-edit" href="/posts/<%= @post.id %>/edit">Редактировать</a>
+  <form action="/posts/<%= @post.id %>" method="post">
+    <input type="hidden" name="_method" value="delete" />
+    <button class="btn btn-danger" id="btn-delete" type="submit">Удалить</button>
+  </form>
+<% end %>
+<hr>
+<p><%= @post.body %></p>
+<hr>
+
+<!-- the comment box -->
+<% if session[:user_id] %>
+  <div class="well">
+    <h4>Добавить комментарий:</h4>
+    <form action="/posts/<%= @post.id %>/comment" method="post" role="form">
+      <div class="form-group">
+        <textarea class="form-control" name="comment[body]" rows="3"><%= @comment.body %></textarea>
+      </div>
+      <input type="hidden" name="comment[commenter]" value="<%= session[:current_user] %>" />
+      <input type="hidden" name="comment[post_id]" value= "<%= @post.id %>" />
+      <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+  </div>
+  <hr>
+<% end %>
+
+<% @comment_show.each do |comment| %>
+  <table class="table-striped">
+  <b><%= comment.commenter %></b><br />
+  <%= comment.body %><hr>
+  </table>  
+<% end %>
+
+
