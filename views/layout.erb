@@ -17,17 +17,19 @@
       <div class="container">
         <div class="navbar-header">          
           <a class="navbar-brand" href="/">На главную</a>
+          <% if session[:user][:id] %>
           <a class="btn-login" id="btn-new_post" href="/posts/new"><button class="btn btn-primary" type="button">Написать пост</button></a>
+          <% end %>
         </div>
 
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav" id="login_box">
-            <% if session[:user_id] %>
-              <li class="username"><a class="user" href="/profile">Привет, <%= session[:current_user] %></a></li>
+            <% if session[:user][:id] %>
+              <li class="username"><a class="user" href="/profile">Привет, <%= session[:user][:username] %></a></li>
             <% else %>
               <li><a class="btn-login" href="/login"><button class="btn btn-primary" type="button">Войти</button></a></li>
             <% end %>
-            <% if session[:user_id] %>
+            <% if session[:user][:id] %>
               <li><a href="/logout"><button class="btn btn-warning" type="button">Выйти</button></a></li>
             <% else %>
               <li><a class="btn-register" href="/register"><button class="btn btn-success" type="button">Регистрация</button></a></li>

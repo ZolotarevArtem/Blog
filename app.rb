@@ -5,7 +5,7 @@ require "digest/md5"
 Dir.glob('./models/*.rb') do |rb_file|
   require "#{rb_file}"
 end
- 
+
 set :database, "sqlite3:///db/blog.sqlite3"
 set :sessions, true
  
@@ -17,9 +17,18 @@ helpers do
   def pretty_date(time)
    time.strftime("%d %b %Y")
   end
-end   
+end
+#require posting.rb(helpers)
+#helpers Posting
+#jamail file
 
-#CREATE
+get "/" do
+  @title = "Блог"
+  @posts = Post.order("created_at DESC")
+  erb :"posts/index"
+end
+
+#Posts
 get "/posts/new" do
   @title = "Новый пост"
   @post = Post.new
@@ -35,13 +44,6 @@ post "/posts" do
   end
 end
 
-#READ
-get "/" do
-  @title = "Блог"
-  @posts = Post.order("created_at DESC")
-  erb :"posts/index"
-end
-
 get "/posts/:id" do
   @post = Post.find(params[:id])
   @user = User.find_by(id: @post.user_id)
@@ -53,25 +55,24 @@ end
 
 post "/posts/:id/comment" do
   @comment = Comment.new(params[:comment])
-  @comment.save
+  @comment.save #проверить
   redirect "posts/#{@comment.post_id}"
 end
 
-#UPDATE
 get "/posts/:id/edit" do
   @post = Post.find(params[:id])
-  if session[:user_id] == @post.user_id
+  if session[:user][:id] == @post.user_id
     @title = "Edit Form"
     @post = Post.find(params[:id])    
     erb :"posts/edit"
   else
-    403
+    403 #befo 
   end
 end
 
 put "/posts/:id" do
   @post = Post.find(params[:id])
-  if session[:user_id] == @post.user_id
+  if session[:user][:id] == @post.user_id
     if @post.update_attributes(params[:post])
       redirect "/posts/#{@post.id}"
     else
@@ -82,10 +83,9 @@ put "/posts/:id" do
   end
 end
 
-#DELETE
 delete "/posts/:id" do
   @post = Post.find(params[:id])
-  if session[:user_id] == @post.user_id
+  if session[:user][:id] == @post.user_id
     @post.destroy
     redirect "/"
   else
@@ -127,23 +127,21 @@ end
 post "/login" do  
   @user = User.find_by_username(params[:user][:username])
   if @user && @user.password == Digest::MD5.hexdigest(params[:user][:password])
-    session[:user_id] = @user.id
-    session[:user_email] = @user.email
-    session[:current_user] = params[:user][:username]    
-    redirect "/"
+    session[:user] = @user
+    redirect "/"  
   else 
     flash[:login] = "Вы ввели неверное имя пользователя или пароль"
     redirect "/login"
   end
 end
 
-get "/profile" do  #get "/<%= session[:current_user] %>"
+get "/profile" do
   @titel = "Личный кабинет"
   erb :"/profile" 
 end
 
 get "/logout" do
-  session[:user_id] = nil
+  session[:user][:id] = nil
   redirect "/"
 end
 
