@@ -4,6 +4,6 @@
   <input name="post[title]" type="text" value="<%= @post.title %>" required /><br />
   <label>Текст:</label><br />
   <textarea name="post[body]" rows="7"><%= @post.body %></textarea><hr>
-  <input type="hidden" name="post[user_id]" type="text" value="<%= session[:user][:id] %>" />  
+  <input type="hidden" name="post[user_id]" type="text" value="<%= session[:user][:username] %>" />  
   <button class="btn btn-large btn-primary" type="submit">Создать пост</button>
 </form> 

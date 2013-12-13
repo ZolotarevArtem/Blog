@@ -1,0 +1,22 @@
+require "digest/md5"
+require "./helpers.rb"
+
+class User < ActiveRecord::Base
+  has_many :posts
+  has_many :comments
+
+  before_save :save_password
+
+  validates :username, presence: true, length: { minimum: 3 } #uniqueness
+  validates :email, presence: true#, format: {with /^([^\s]+)((?:[-a-z0-9]\.)[a-z]{2,})$/i} 
+  validates :password, presence: true, length: { minimum: 6 }
+
+  private
+
+     def hash_password(password)
+      Digest::MD5.hexdigest(password)
+    end
+  def save_password
+    self.password = hash_password(self.password)
+  end
+end

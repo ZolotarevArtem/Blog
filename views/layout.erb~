@@ -29,7 +29,7 @@
             <% else %>
               <li><a class="btn-login" href="/login"><button class="btn btn-primary" type="button">Войти</button></a></li>
             <% end %>
-            <% if session[:user] %>
+            <% if session[:user][:id] %>
               <li><a href="/logout"><button class="btn btn-warning" type="button">Выйти</button></a></li>
             <% else %>
               <li><a class="btn-register" href="/register"><button class="btn btn-success" type="button">Регистрация</button></a></li>

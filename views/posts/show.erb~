@@ -32,7 +32,7 @@
 
 <% @comment_show.each do |comment| %>
   <table class="table-striped">
-  <b><%= comment.user.username %></b><br />
+  <b><%= comment.user.name %></b><br />
   <%= comment.body %><hr>
   </table>  
 <% end %>
