@@ -2,13 +2,16 @@ source :rubygems
 source "https://rubygems.org"
  
 gem "sinatra"
-gem "sqlite3"
 gem "activerecord"
 gem "sinatra-activerecord"
-gem "sinatra/twitter-bootstrap"
-gem "sinatra/flash"
+gem "pg"
+gem "sinatra-flash"
  
-group :development do
+group :development, :test do
   gem "shotgun"
-  gem "tux"
+  gem "sqlite3"
+end
+
+group :production do
+  gem "pg"
 end

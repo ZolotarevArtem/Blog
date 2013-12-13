@@ -39,8 +39,6 @@ end
 
 get "/posts/:id" do
   @post = Post.find(params[:id])
-  @user = User.find_by(id: @post.user_id)
-  @comment_show = Comment.where("post_id = ?", params[:id])
   @comment = Comment.new
   @title = @post.title  
   erb :"posts/show"

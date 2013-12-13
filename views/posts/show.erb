@@ -1,9 +1,9 @@
 <h1><%= @post.title %></h1>
-<p class="lead">Автор: <%= @user.username %></p>
+<p class="lead">Автор: <%= @post.user.username %></p>
 <hr>
 <p><span class="glyphicon glyphicon-time"></span>  <%= pretty_date(@post.created_at) %></p>
 
-<% if session[:user][:id] == @post.user_id %>
+<% if session[:user] != nil && session[:user][:id] == @post.user_id %>
   <a class="btn btn-warning" id="btn-edit" href="/posts/<%= @post.id %>/edit">Редактировать</a>
   <form action="/posts/<%= @post.id %>" method="post">
     <input type="hidden" name="_method" value="delete" />
@@ -15,7 +15,7 @@
 <hr>
 
 <!-- the comment box -->
-<% if session[:user][:id] %>
+<% if session[:user] %>
   <div class="well">
     <h4>Добавить комментарий:</h4>
     <form action="/posts/<%= @post.id %>/comment" method="post" role="form">
@@ -30,7 +30,7 @@
   <hr>
 <% end %>
 
-<% @comment_show.each do |comment| %>
+<% @post.comments.each do |comment| %>
   <table class="table-striped">
   <b><%= comment.user.username %></b><br />
   <%= comment.body %><hr>
