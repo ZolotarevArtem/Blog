@@ -1,0 +1,11 @@
+<h2>Список всех статей</h2>
+<ul class = "post_each">
+<% @posts.each do |post| %>
+  <li>
+    <h2><a href="/posts/<%= post.id %>"><%= post.title %></a>
+    <br />
+    <span class="date"><%= pretty_date(post.created_at) %></span>
+    </h2>
+  </li>
+<% end %>
+</ul>
