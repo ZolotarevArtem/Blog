@@ -2,6 +2,7 @@ require "sinatra"
 require "sinatra/activerecord"
 require "sinatra/flash"
 require "digest/md5"
+require 'yaml'
 require "./helpers/other.rb"
 require "./helpers/user_error.rb"
 Dir.glob('./models/*.rb') do |rb_file|
@@ -119,7 +120,7 @@ end
 
 post "/login" do  
   @user = User.find_by_username(params[:user][:username])
-  if @user && @user.password == params[:user][:password] #Digest::MD5.hexdigest
+  if @user && @user.auth(params[:user][:password])
     session[:user] = @user
     redirect "/"  
   else 
