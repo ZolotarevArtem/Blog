@@ -9,6 +9,23 @@ Dir.glob('./models/*.rb') do |rb_file|
   require "#{rb_file}"
 end
 
+configure :development do
+  set :database, 'sqlite:///db/blog.sqlite3'
+end
+ 
+configure :production do
+  db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
+ 
+  ActiveRecord::Base.establish_connection(
+    :adapter => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
+    :host => db.host,
+    :username => db.user,
+    :password => db.password,
+    :database => db.path[1..-1],
+    :encoding => 'utf8'
+  )
+end
+
 set :database, "sqlite3:///db/blog.sqlite3"
 set :sessions, true
  
