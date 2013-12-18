@@ -12,6 +12,7 @@ end
 configure :development do
   set :database, 'sqlite:///db/blog.sqlite3'
 end
+
  
 configure :production do
   db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
@@ -25,6 +26,7 @@ configure :production do
     :encoding => 'utf8'
   )
 end
+
 
 set :database, "sqlite3:///db/blog.sqlite3"
 set :sessions, true

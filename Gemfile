@@ -7,7 +7,7 @@ gem "sinatra-flash"
  
 group :development, :test do
   gem "shotgun"  
-  gem "sqlite3"
+
 end
 
 group :production do  
