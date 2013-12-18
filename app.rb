@@ -27,8 +27,6 @@ configure :production do
   )
 end
 
-
-set :database, "sqlite3:///db/blog.sqlite3"
 set :sessions, true
  
 helpers Other, User_error
