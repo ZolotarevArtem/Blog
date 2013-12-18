@@ -2,7 +2,8 @@ require "sinatra"
 require "sinatra/activerecord"
 require "sinatra/flash"
 require "digest/md5"
-require "./helpers.rb"
+require "./helpers/other.rb"
+require "./helpers/user_error.rb"
 Dir.glob('./models/*.rb') do |rb_file|
   require "#{rb_file}"
 end
@@ -10,10 +11,7 @@ end
 set :database, "sqlite3:///db/blog.sqlite3"
 set :sessions, true
  
-
-#require posting.rb(helpers)
-#helpers Posting
-#jamail file
+helpers Other, User_error
 
 get "/" do
   @title = "Блог"
