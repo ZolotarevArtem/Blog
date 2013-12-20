@@ -2,7 +2,7 @@
 <ul class = "post_each">
 <% @posts.each do |post| %>
   <li>
-    <h2><a href="/posts/<%= post.id %>"><%= post.title %></a>
+    <h2><a href="/posts/<%= post.id %>"><%= h post.title %></a>
     <br />
     <span class="date"><%= pretty_date(post.created_at) %></span>
     </h2>

@@ -2,9 +2,7 @@ require "sinatra"
 require "sinatra/activerecord"
 require "sinatra/flash"
 require "digest/md5"
-require 'yaml'
-require "./helpers/other.rb"
-require "./helpers/user_error.rb"
+require "./helpers/helper.rb"
 Dir.glob('./models/*.rb') do |rb_file|
   require "#{rb_file}"
 end
@@ -13,23 +11,9 @@ configure :development do
   set :database, 'sqlite:///db/blog.sqlite3'
 end
 
- 
-configure :production do
-  db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
- 
-  ActiveRecord::Base.establish_connection(
-    :adapter => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
-    :host => db.host,
-    :username => db.user,
-    :password => db.password,
-    :database => db.path[1..-1],
-    :encoding => 'utf8'
-  )
-end
-
 set :sessions, true
  
-helpers Other, User_error
+helpers Helper
 
 get "/" do
   @title = "Блог"
@@ -55,6 +39,7 @@ end
 
 get "/posts/:id" do
   @post = Post.find(params[:id])
+  escape_html(@post)
   @comment = Comment.new
   @title = @post.title  
   erb :"posts/show"
@@ -62,7 +47,7 @@ end
 
 post "/posts/:id/comment" do
   @comment = Comment.new(params[:comment])
-  @comment.save #проверить
+  @comment.save
   redirect "posts/#{@comment.post_id}"
 end
 
@@ -73,7 +58,7 @@ get "/posts/:id/edit" do
     @post = Post.find(params[:id])    
     erb :"posts/edit"
   else
-    403 #befo 
+    403
   end
 end
 
@@ -108,21 +93,12 @@ get "/register" do
 end
 
 post "/register" do
-=begin
   flash[:register] = nil 
-  
-  flash[:register] = "Пароль должен содержать не мение 6 символов" if @user.password.length < 6
+  @user = User.new(params[:user])
+  flash[:register] = "Пароль должен содержать не мение 6 символов" if @user.password.length < 6 
   flash[:register] = "Пользователь с таким именем уже существует" if User.find_by(username: @user.username)
   flash[:register] = "Логин должен содержать не мение 3 символов" if @user.username.length < 3
-  if (flash[:register] == nil && @user.save) #не работает!!!!
-    redirect "/"
-  else
-    flash[:register] = "Что-то пошло не так. Повторите попытку позже." if flash[:register] == nil
-    redirect "/register"
-  end
-=end
-  @user = User.new(params[:user])
-  if @user.save
+  if (flash[:register] == nil && @user.save)
     redirect "/"
   else
     redirect "/register"
